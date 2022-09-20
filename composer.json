@@ -2,6 +2,7 @@
     "name": "justbetter/laravel-magento-products",
     "description": "Package to store product data in a local DB",
     "type": "package",
+    "license": "MIT",
     "require": {
         "php": "^8.0",
         "justbetter/laravel-magento-client": "^1.0",
