@@ -1,0 +1,56 @@
+{
+    "name": "justbetter/laravel-magento-products",
+    "description": "Package to store product data in a local DB",
+    "type": "package",
+    "require": {
+        "php": "^8.0",
+        "justbetter/laravel-magento-client": "^1.0",
+        "laravel/framework": "^9.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.2",
+        "nunomaduro/larastan": "^2.1",
+        "orchestra/testbench": "^7.0",
+        "phpstan/phpstan-mockery": "^1.1",
+        "phpunit/phpunit": "^9.5.10"
+    },
+    "authors": [
+        {
+            "name": "Vincent Boon",
+            "email": "vincent@justbetter.nl",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "JustBetter\\MagentoProducts\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JustBetter\\MagentoProducts\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan",
+        "style": "pint --test",
+        "quality": [
+            "@test",
+            "@analyse",
+            "@style"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JustBetter\\MagentoProducts\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
