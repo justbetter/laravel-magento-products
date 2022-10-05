@@ -10,7 +10,6 @@ class RegisterProductListenerTest extends TestCase
 {
     public function test_it_registers_products_on_discover_event(): void
     {
-        $this->assertTrue(false);
         event(new ProductDiscoveredEvent('123'));
 
         $this->assertNotNull(MagentoProduct::query()->where('sku', '123')->first());
