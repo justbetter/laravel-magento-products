@@ -13,7 +13,7 @@ return new class extends Migration
 
             $table->string('sku')->unique();
             $table->boolean('exists_in_magento')->default(false);
-            $table->dateTime('last_checked')->nullable()->after('exists');
+            $table->dateTime('last_checked')->nullable();
             $table->json('data')->nullable();
 
             $table->timestamps();
