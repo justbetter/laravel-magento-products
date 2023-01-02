@@ -5,6 +5,7 @@ namespace JustBetter\MagentoProducts;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JustBetter\MagentoProducts\Actions\CheckKnownProducts;
+use JustBetter\MagentoProducts\Actions\CheckMagentoEnabled;
 use JustBetter\MagentoProducts\Actions\CheckMagentoExistence;
 use JustBetter\MagentoProducts\Actions\ProcessMagentoSkus;
 use JustBetter\MagentoProducts\Actions\RetrieveMagentoSkus;
@@ -23,6 +24,7 @@ class ServiceProvider extends BaseServiceProvider
 
         CheckKnownProducts::bind();
         CheckMagentoExistence::bind();
+        CheckMagentoEnabled::bind();
         ProcessMagentoSkus::bind();
         RetrieveMagentoSkus::bind();
         RetrieveProductData::bind();

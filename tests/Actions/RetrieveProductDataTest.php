@@ -3,7 +3,6 @@
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Actions\RetrieveProductData;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
@@ -51,8 +50,6 @@ class RetrieveProductDataTest extends TestCase
 
     public function test_it_retrieves_missing_product(): void
     {
-        $this->expectException(RequestException::class);
-
         $data = $this->action->retrieve('404');
 
         $this->assertNull($data);
