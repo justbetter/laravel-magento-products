@@ -22,9 +22,7 @@ class CheckMagentoExistence implements ChecksMagentoExistence
         if ($magentoProduct === null) {
             $response = $this->getMagentoProduct($sku);
 
-            if ($response->serverError()) {
-                $response->throw();
-            }
+            $response->throwIf($response->serverError());
 
             $magentoProduct = MagentoProduct::query()->create([
                 'sku' => $sku,

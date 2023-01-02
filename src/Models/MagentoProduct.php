@@ -10,6 +10,7 @@ use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
  * @property int $id
  * @property string $sku
  * @property bool $exists_in_magento
+ * @property bool $enabled
  * @property ?array $data
  * @property ?Carbon $last_checked
  */
