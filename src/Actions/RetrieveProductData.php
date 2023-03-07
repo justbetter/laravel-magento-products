@@ -13,12 +13,12 @@ class RetrieveProductData implements RetrievesProductData
     {
     }
 
-    public function retrieve(string $sku, bool $force = false): ?array
+    public function retrieve(string $sku, bool $force = false, ?string $store = null): ?array
     {
-        $product = MagentoProduct::findBySku($sku);
+        $product = MagentoProduct::findBySku($sku, $store);
 
         if ($product === null) {
-            $magentoProductResponse = $this->getMagentoProduct($sku);
+            $magentoProductResponse = $this->getMagentoProduct($sku, $store);
 
             $magentoProductResponse->throwIf($magentoProductResponse->serverError());
 
@@ -28,6 +28,7 @@ class RetrieveProductData implements RetrievesProductData
                     'last_checked' => now(),
                     'exists_in_magento' => $magentoProductResponse->successful(),
                     'data' => $magentoProductResponse->successful() ? $magentoProductResponse->json() : null,
+                    'store' => $store,
                 ]);
         }
 
@@ -38,7 +39,7 @@ class RetrieveProductData implements RetrievesProductData
             $lastChecked === null ||
             now()->diffInHours($lastChecked) > config('magento-products.check_interval', 24)
         ) {
-            $response = $this->getMagentoProduct($sku);
+            $response = $this->getMagentoProduct($sku, $store);
 
             if (! $response->successful()) {
                 return null;
@@ -53,9 +54,11 @@ class RetrieveProductData implements RetrievesProductData
         return $product->data;
     }
 
-    protected function getMagentoProduct(string $sku): Response
+    protected function getMagentoProduct(string $sku, ?string $store = null): Response
     {
-        return $this->magento->get("products/$sku");
+        return $this->magento
+            ->store($store)
+            ->get("products/$sku");
     }
 
     public static function bind(): void

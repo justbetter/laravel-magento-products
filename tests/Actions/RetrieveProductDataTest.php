@@ -23,8 +23,8 @@ class RetrieveProductDataTest extends TestCase
         Http::fake([
             '*/products/123' => Http::response(['123']),
             '*/products/456' => Http::response(['456']),
+            '*/some_store/V1/products/789' => Http::response(['789']),
             '*/products/404' => Http::response([], 404),
-
         ]);
     }
 
@@ -45,6 +45,22 @@ class RetrieveProductDataTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->url() == 'rest/all/V1/products/456';
+        });
+    }
+
+    public function test_it_retrieves_product_for_store(): void
+    {
+        $data = $this->action->retrieve('789', false, 'some_store');
+
+        $this->assertEquals(['789'], $data);
+
+        /** @var MagentoProduct $createdProduct */
+        $createdProduct = MagentoProduct::findBySku('789', 'some_store');
+
+        $this->assertEquals('some_store', $createdProduct->store);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() == 'rest/some_store/V1/products/789';
         });
     }
 
