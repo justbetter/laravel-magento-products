@@ -29,8 +29,6 @@ class CheckMagentoExistence implements ChecksMagentoExistence
                 'exists_in_magento' => $response->ok(),
                 'last_checked' => now(),
             ]);
-
-            return $magentoProduct->exists_in_magento;
         }
 
         return $magentoProduct->exists_in_magento;
