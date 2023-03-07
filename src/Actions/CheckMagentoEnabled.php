@@ -12,9 +12,9 @@ class CheckMagentoEnabled implements ChecksMagentoEnabled
     ) {
     }
 
-    public function enabled(string $sku): bool
+    public function enabled(string $sku, bool $force = false, ?string $store = null): bool
     {
-        $data = $this->productData->retrieve($sku);
+        $data = $this->productData->retrieve($sku, $force, $store);
 
         if ($data === null) {
             return false;
