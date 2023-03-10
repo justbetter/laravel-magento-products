@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.1.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.2.0...main)
+## [1.2.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.2.0) - 2023-03-10
+
+### What's Changed
+* Support Laravel 10 by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/7
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.1.1...1.2.0
+
 ## [1.1.1](https://github.com/justbetter/laravel-magento-products/releases/tag/1.1.1) - 2023-03-07
 
 ### What's Changed
