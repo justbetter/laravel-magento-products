@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoProducts\Commands;
 
 use Illuminate\Console\Command;
-use JustBetter\MagentoProducts\Jobs\CheckKnownProductsExistenceJob;
+use JustBetter\MagentoProducts\Jobs\CheckAllKnownProductsExistenceJob;
 
 class CheckKnownProductsExistenceCommand extends Command
 {
@@ -15,7 +15,7 @@ class CheckKnownProductsExistenceCommand extends Command
     {
         $this->info('Dispatching...');
 
-        CheckKnownProductsExistenceJob::dispatch();
+        CheckAllKnownProductsExistenceJob::dispatch();
 
         $this->info('Done!');
 
