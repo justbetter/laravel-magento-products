@@ -4,6 +4,7 @@ namespace JustBetter\MagentoProducts;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JustBetter\MagentoProducts\Actions\CheckAllKnownProducts;
 use JustBetter\MagentoProducts\Actions\CheckKnownProducts;
 use JustBetter\MagentoProducts\Actions\CheckMagentoEnabled;
 use JustBetter\MagentoProducts\Actions\CheckMagentoExistence;
@@ -23,6 +24,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/magento-products.php', 'magento-products');
 
         CheckKnownProducts::bind();
+        CheckAllKnownProducts::bind();
         CheckMagentoExistence::bind();
         CheckMagentoEnabled::bind();
         ProcessMagentoSkus::bind();

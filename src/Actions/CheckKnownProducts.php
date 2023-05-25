@@ -11,7 +11,7 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 
 class CheckKnownProducts implements ChecksKnownProducts
 {
-    protected const CHUNK_SIZE = 100;
+    public const CHUNK_SIZE = 100;
 
     public function __construct(protected Magento $magento)
     {
