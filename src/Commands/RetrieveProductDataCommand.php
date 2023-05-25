@@ -13,7 +13,10 @@ class RetrieveProductDataCommand extends Command
 
     public function handle(RetrievesProductData $retrievesProductData): int
     {
-        $data = $retrievesProductData->retrieve($this->argument('sku')); /** @phpstan-ignore-line */
+        /** @var string $sku */
+        $sku = $this->argument('sku');
+
+        $data = $retrievesProductData->retrieve($sku);
         $this->info(json_encode($data)); /** @phpstan-ignore-line */
 
         return static::SUCCESS;
