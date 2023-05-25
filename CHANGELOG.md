@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.2.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.2.1...main)
+## [1.2.1](https://github.com/justbetter/laravel-magento-products/releases/tag/1.2.1) - 2023-05-25
+
+### What's Changed
+* Split known products checks into multiple jobs by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/8
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.2.0...1.2.1
+
 ## [1.2.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.2.0) - 2023-03-10
 
 ### What's Changed
