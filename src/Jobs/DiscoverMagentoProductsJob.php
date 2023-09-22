@@ -12,13 +12,13 @@ use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoProducts\Contracts\ProcessesMagentoSkus;
 use JustBetter\MagentoProducts\Contracts\RetrievesMagentoSkus;
 
-class DiscoverMagentoProductsJob implements ShouldQueue, ShouldBeUnique
+class DiscoverMagentoProductsJob implements ShouldBeUnique, ShouldQueue
 {
+    use Batchable;
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-    use Batchable;
 
     public int $timeout = 60;
 

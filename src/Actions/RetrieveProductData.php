@@ -13,7 +13,7 @@ class RetrieveProductData implements RetrievesProductData
     {
     }
 
-    public function retrieve(string $sku, bool $force = false, ?string $store = null): ?array
+    public function retrieve(string $sku, bool $force = false, string $store = null): ?array
     {
         $product = MagentoProduct::findBySku($sku, $store);
 
@@ -54,7 +54,7 @@ class RetrieveProductData implements RetrievesProductData
         return $product->data;
     }
 
-    protected function getMagentoProduct(string $sku, ?string $store = null): Response
+    protected function getMagentoProduct(string $sku, string $store = null): Response
     {
         return $this->magento
             ->store($store)

@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoProducts\Contracts\ChecksAllKnownProducts;
 
-class CheckAllKnownProductsExistenceJob implements ShouldQueue, ShouldBeUnique
+class CheckAllKnownProductsExistenceJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
