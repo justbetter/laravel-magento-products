@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoProducts\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Testing\Fakes\PendingBatchFake;
 use JustBetter\MagentoProducts\Commands\DiscoverMagentoProductsCommand;
 use JustBetter\MagentoProducts\Jobs\DiscoverMagentoProductsJob;
 use JustBetter\MagentoProducts\Tests\TestCase;
@@ -15,6 +16,8 @@ class DiscoverMagentoProductsCommandTest extends TestCase
 
         $this->artisan(DiscoverMagentoProductsCommand::class);
 
-        Bus::assertDispatched(DiscoverMagentoProductsJob::class);
+        Bus::assertBatched(function (PendingBatchFake $batch) {
+            return $batch->jobs->count() === 1 && get_class($batch->jobs->first()) === DiscoverMagentoProductsJob::class;
+        });
     }
 }

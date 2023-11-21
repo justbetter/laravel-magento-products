@@ -8,6 +8,8 @@ use JustBetter\MagentoProducts\Actions\CheckAllKnownProducts;
 use JustBetter\MagentoProducts\Actions\CheckKnownProducts;
 use JustBetter\MagentoProducts\Actions\CheckMagentoEnabled;
 use JustBetter\MagentoProducts\Actions\CheckMagentoExistence;
+use JustBetter\MagentoProducts\Actions\CheckRemovedProducts;
+use JustBetter\MagentoProducts\Actions\DiscoverMagentoProducts;
 use JustBetter\MagentoProducts\Actions\ProcessMagentoSkus;
 use JustBetter\MagentoProducts\Actions\RetrieveMagentoSkus;
 use JustBetter\MagentoProducts\Actions\RetrieveProductData;
@@ -30,6 +32,8 @@ class ServiceProvider extends BaseServiceProvider
         ProcessMagentoSkus::bind();
         RetrieveMagentoSkus::bind();
         RetrieveProductData::bind();
+        DiscoverMagentoProducts::bind();
+        CheckRemovedProducts::bind();
     }
 
     public function boot(): void

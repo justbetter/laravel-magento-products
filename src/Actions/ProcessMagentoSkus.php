@@ -15,6 +15,7 @@ class ProcessMagentoSkus implements ProcessesMagentoSkus
             ->whereIn('sku', $skus)
             ->where('exists_in_magento', true)
             ->select(['sku'])
+            ->distinct()
             ->get()
             ->pluck('sku');
 

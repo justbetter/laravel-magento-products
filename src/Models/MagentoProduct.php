@@ -2,10 +2,9 @@
 
 namespace JustBetter\MagentoProducts\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -15,6 +14,9 @@ use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
  * @property bool $enabled
  * @property ?array $data
  * @property ?Carbon $last_checked
+ * @property bool $retrieved
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
  */
 class MagentoProduct extends Model
 {
@@ -24,6 +26,7 @@ class MagentoProduct extends Model
         'data' => 'array',
         'exists_in_magento' => 'boolean',
         'last_checked' => 'datetime',
+        'retrieved' => 'boolean',
     ];
 
     public static function findBySku(string $sku, string $store = null): ?static
@@ -35,18 +38,5 @@ class MagentoProduct extends Model
             ->first();
 
         return $item;
-    }
-
-    /**
-     * @deprecated Use the action ChecksMagentoExistence instead
-     *
-     * @codeCoverageIgnore
-     */
-    public static function existsInMagento(string $sku): bool
-    {
-        /** @var ChecksMagentoExistence $action */
-        $action = app(ChecksMagentoExistence::class);
-
-        return $action->exists($sku);
     }
 }
