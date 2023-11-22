@@ -4,7 +4,7 @@ namespace JustBetter\MagentoProducts\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 
-class ProductCreatedInMagentoEvent
+class ProductDeletedInMagentoEvent
 {
     use Dispatchable;
 

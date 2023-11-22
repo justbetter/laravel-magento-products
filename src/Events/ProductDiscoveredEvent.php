@@ -2,7 +2,7 @@
 
 namespace JustBetter\MagentoProducts\Events;
 
-use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Foundation\Events\Dispatchable;
 
 class ProductDiscoveredEvent
 {

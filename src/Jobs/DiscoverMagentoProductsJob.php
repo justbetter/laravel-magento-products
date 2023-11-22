@@ -9,8 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use JustBetter\MagentoProducts\Contracts\ProcessesMagentoSkus;
-use JustBetter\MagentoProducts\Contracts\RetrievesMagentoSkus;
+use JustBetter\MagentoProducts\Contracts\DiscoversMagentoProducts;
 
 class DiscoverMagentoProductsJob implements ShouldBeUnique, ShouldQueue
 {
@@ -31,23 +30,13 @@ class DiscoverMagentoProductsJob implements ShouldBeUnique, ShouldQueue
         $this->onQueue(config('magento-products.queue'));
     }
 
-    public function handle(
-        RetrievesMagentoSkus $retrievesMagentoSkus,
-        ProcessesMagentoSkus $processesMagentoSkus
-    ): void {
-        $skus = $retrievesMagentoSkus->retrieve($this->page);
-
-        $hasNextPage = $skus->count() == config('magento-products.page_size', 50);
-
-        if ($hasNextPage) {
-            if ($this->batching()) {
-                $this->batch()->add(new static($this->page + 1)); /** @phpstan-ignore-line */
-            } else {
-                static::dispatch($this->page + 1);
-            }
+    public function handle(DiscoversMagentoProducts $contract): void
+    {
+        if ($this->batch() === null || $this->batch()->cancelled()) {
+            return;
         }
 
-        $processesMagentoSkus->process($skus);
+        $contract->discover($this->page, $this->batch());
     }
 
     public function tags(): array
