@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.2.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.3.0...main)
+## [1.3.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.3.0) - 2023-11-22
+
+### What's Changed
+* Check for deleted products in Magento by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/9
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.2.1...1.3.0
+
 ## [1.2.1](https://github.com/justbetter/laravel-magento-products/releases/tag/1.2.1) - 2023-05-25
 
 ### What's Changed
