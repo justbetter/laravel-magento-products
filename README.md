@@ -7,8 +7,7 @@
 </p>
 
 This package tracks if products exist in Magento by storing the status locally in the DB.
-We developed this to prevent multiple calls when multiple packages need to check product existance in Magento.
-This package does do the assumption that once a product exists in Magento it will always be there.
+We developed this to prevent multiple calls when multiple packages need to check product existence in Magento.
 
 
 ## Installation
@@ -25,6 +24,9 @@ Add the following to your schedule to automatically search for products in Magen
 $schedule->command(\JustBetter\MagentoProducts\Commands\CheckKnownProductsExistenceCommand::class)->twiceDaily();
 $schedule->command(\JustBetter\MagentoProducts\Commands\DiscoverMagentoProductsCommand::class)->daily();
 ```
+
+> [!IMPORTANT]
+> This package requires Job Batching
 
 ## Usage
 
