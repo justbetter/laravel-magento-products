@@ -22,7 +22,7 @@ class RetrieveProductDataTest extends TestCase
 
         Http::fake([
             '*/products/123' => Http::response(['123']),
-            '*/products/456' => Http::response(['456']),
+            '*/products/123%2B456' => Http::response(['456']),
             '*/some_store/V1/products/789' => Http::response(['789']),
             '*/products/404' => Http::response([], 404),
         ]);
@@ -39,12 +39,12 @@ class RetrieveProductDataTest extends TestCase
 
     public function test_it_retrieves_new_product(): void
     {
-        $data = $this->action->retrieve('456');
+        $data = $this->action->retrieve('123+456');
 
         $this->assertEquals(['456'], $data);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'rest/all/V1/products/456';
+            return $request->url() == 'rest/all/V1/products/123%2B456';
         });
     }
 

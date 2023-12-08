@@ -58,7 +58,7 @@ class RetrieveProductData implements RetrievesProductData
     {
         return $this->magento
             ->store($store)
-            ->get("products/$sku");
+            ->get('products/'.urlencode($sku));
     }
 
     public static function bind(): void
