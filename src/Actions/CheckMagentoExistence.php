@@ -36,7 +36,7 @@ class CheckMagentoExistence implements ChecksMagentoExistence
 
     protected function getMagentoProduct(string $sku): Response
     {
-        return $this->magento->get('products/' . urlencode($sku), ['fields' => 'sku']);
+        return $this->magento->get('products/'.urlencode($sku), ['fields' => 'sku']);
     }
 
     public static function bind(): void

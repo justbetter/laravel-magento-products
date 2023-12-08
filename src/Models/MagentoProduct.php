@@ -29,7 +29,7 @@ class MagentoProduct extends Model
         'retrieved' => 'boolean',
     ];
 
-    public static function findBySku(string $sku, string $store = null): ?static
+    public static function findBySku(string $sku, ?string $store = null): ?static
     {
         /** @var ?static $item */
         $item = static::query()
