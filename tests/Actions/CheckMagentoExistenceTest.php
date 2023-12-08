@@ -23,7 +23,8 @@ class CheckMagentoExistenceTest extends TestCase
         Http::fake([
             '*products/123?fields=sku' => Http::response(['data']),
             '*products/456?fields=sku' => Http::response([], 404),
-        ]);
+            '*products/123%2B456?fields=sku' => Http::response(['data']),
+        ])->preventStrayRequests();
     }
 
     public function test_existing_product(): void
@@ -31,6 +32,11 @@ class CheckMagentoExistenceTest extends TestCase
         MagentoProduct::query()->create(['sku' => '123', 'exists_in_magento' => true, 'last_checked' => now()->subHour()]);
 
         $this->assertTrue($this->action->exists('123'));
+    }
+
+    public function test_urlencode(): void
+    {
+        $this->assertTrue($this->action->exists('123+456'));
     }
 
     public function test_new_existing_product(): void
