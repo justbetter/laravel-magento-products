@@ -37,7 +37,7 @@ class RetrieveProductData implements RetrievesProductData
         if ($force ||
             $product->data === null ||
             $lastChecked === null ||
-            now()->diffInHours($lastChecked) > config('magento-products.check_interval', 24)
+            $lastChecked->diffInHours(now()) > config('magento-products.check_interval', 24)
         ) {
             $response = $this->getMagentoProduct($sku, $store);
 

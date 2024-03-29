@@ -44,7 +44,7 @@ class CheckMagentoExistenceTest extends TestCase
         $this->assertTrue($this->action->exists('123'));
         $this->assertTrue(MagentoProduct::query()->where('sku', '123')->first()->exists_in_magento); /** @phpstan-ignore-line */
         Http::assertSent(function (Request $request) {
-            return $request->url() === 'rest/all/V1/products/123?fields=sku';
+            return $request->url() === 'magento/rest/all/V1/products/123?fields=sku';
         });
     }
 
@@ -53,7 +53,7 @@ class CheckMagentoExistenceTest extends TestCase
         $this->assertFalse($this->action->exists('456'));
         $this->assertFalse(MagentoProduct::query()->where('sku', '456')->first()->exists_in_magento); /** @phpstan-ignore-line */
         Http::assertSent(function (Request $request) {
-            return $request->url() === 'rest/all/V1/products/456?fields=sku';
+            return $request->url() === 'magento/rest/all/V1/products/456?fields=sku';
         });
     }
 

@@ -44,7 +44,7 @@ class RetrieveProductDataTest extends TestCase
         $this->assertEquals(['456'], $data);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'rest/all/V1/products/123%2B456';
+            return $request->url() == 'magento/rest/all/V1/products/123%2B456';
         });
     }
 
@@ -60,7 +60,7 @@ class RetrieveProductDataTest extends TestCase
         $this->assertEquals('some_store', $createdProduct->store);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'rest/some_store/V1/products/789';
+            return $request->url() == 'magento/rest/some_store/V1/products/789';
         });
     }
 
@@ -71,7 +71,7 @@ class RetrieveProductDataTest extends TestCase
         $this->assertNull($data);
         $this->assertFalse(MagentoProduct::query()->where('sku', '404')->first()->exists_in_magento); /** @phpstan-ignore-line */
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'rest/all/V1/products/404';
+            return $request->url() == 'magento/rest/all/V1/products/404';
         });
     }
 
@@ -84,7 +84,7 @@ class RetrieveProductDataTest extends TestCase
         $this->assertEquals(['123'], $data);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'rest/all/V1/products/123';
+            return $request->url() == 'magento/rest/all/V1/products/123';
         });
     }
 
@@ -97,7 +97,7 @@ class RetrieveProductDataTest extends TestCase
         $this->assertEquals(['123'], $data);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'rest/all/V1/products/123';
+            return $request->url() == 'magento/rest/all/V1/products/123';
         });
     }
 
@@ -110,7 +110,7 @@ class RetrieveProductDataTest extends TestCase
         $this->assertNull($data);
 
         Http::assertSent(function (Request $request) {
-            return $request->url() == 'rest/all/V1/products/404';
+            return $request->url() == 'magento/rest/all/V1/products/404';
         });
     }
 }

@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoProducts\Tests;
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\ServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -23,6 +24,8 @@ abstract class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix' => '',
         ]);
+
+        Magento::fake();
     }
 
     protected function getPackageProviders($app): array
