@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.3.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.4.0...main)
+## [1.4.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.4.0) - 2024-03-29
+
+### What's Changed
+* Support Laravel 11 by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/11
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.3.1...1.4.0
+
+## [1.3.1](https://github.com/justbetter/laravel-magento-products/releases/tag/1.3.1) - 2023-12-08
+
+### What's Changed
+* Add URL encodes to Magento calls by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/10
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.3.0...1.3.1
+
 ## [1.3.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.3.0) - 2023-11-22
 
 ### What's Changed
