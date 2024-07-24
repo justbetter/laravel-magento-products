@@ -9,9 +9,7 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 
 class RetrieveProductData implements RetrievesProductData
 {
-    public function __construct(protected Magento $magento)
-    {
-    }
+    public function __construct(protected Magento $magento) {}
 
     public function retrieve(string $sku, bool $force = false, ?string $store = null): ?array
     {

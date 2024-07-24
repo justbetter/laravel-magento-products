@@ -12,8 +12,7 @@ class CheckMagentoExistence implements ChecksMagentoExistence
     public function __construct(
         protected Magento $magento,
         protected RetrieveMagentoSkus $retrieveMagentoSkus
-    ) {
-    }
+    ) {}
 
     public function exists(string $sku): bool
     {

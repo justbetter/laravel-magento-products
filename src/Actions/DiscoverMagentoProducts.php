@@ -14,8 +14,7 @@ class DiscoverMagentoProducts implements DiscoversMagentoProducts
     public function __construct(
         protected RetrievesMagentoSkus $magentoSkus,
         protected ProcessesMagentoSkus $processor
-    ) {
-    }
+    ) {}
 
     public function discover(int $page, Batch $batch): void
     {

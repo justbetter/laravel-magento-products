@@ -33,7 +33,7 @@ class DiscoverMagentoProductsTest extends TestCase
             $mock->shouldReceive('process')->with($skus)->once();
         });
 
-        $job = new DiscoverMagentoProductsJob();
+        $job = new DiscoverMagentoProductsJob;
         $job->withFakeBatch();
 
         /** @var Batch $batch */
@@ -55,7 +55,7 @@ class DiscoverMagentoProductsTest extends TestCase
             $mock->shouldReceive('process')->once();
         });
 
-        $job = new DiscoverMagentoProductsJob();
+        $job = new DiscoverMagentoProductsJob;
         $job->withFakeBatch();
 
         /** @var Batch $batch */
@@ -89,7 +89,7 @@ class DiscoverMagentoProductsTest extends TestCase
             $mock->shouldReceive('process')->once();
         });
 
-        $job = new DiscoverMagentoProductsJob();
+        $job = new DiscoverMagentoProductsJob;
         $job->withFakeBatch();
 
         /** @var Batch $batch */
@@ -123,7 +123,7 @@ class DiscoverMagentoProductsTest extends TestCase
             $mock->shouldReceive('process')->once();
         });
 
-        $job = new DiscoverMagentoProductsJob();
+        $job = new DiscoverMagentoProductsJob;
         $job->withFakeBatch();
 
         /** @var Batch $batch */

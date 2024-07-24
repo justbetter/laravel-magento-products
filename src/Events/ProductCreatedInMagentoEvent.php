@@ -8,7 +8,5 @@ class ProductCreatedInMagentoEvent
 {
     use Dispatchable;
 
-    public function __construct(public string $sku)
-    {
-    }
+    public function __construct(public string $sku) {}
 }

@@ -9,8 +9,7 @@ class CheckMagentoEnabled implements ChecksMagentoEnabled
 {
     public function __construct(
         protected RetrievesProductData $productData
-    ) {
-    }
+    ) {}
 
     public function enabled(string $sku, bool $force = false, ?string $store = null): bool
     {

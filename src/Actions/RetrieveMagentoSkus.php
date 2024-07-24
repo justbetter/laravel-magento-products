@@ -11,8 +11,7 @@ class RetrieveMagentoSkus implements RetrievesMagentoSkus
 {
     public function __construct(
         protected Magento $magento
-    ) {
-    }
+    ) {}
 
     public function retrieve(int $page): Enumerable
     {

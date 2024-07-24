@@ -8,7 +8,5 @@ class ProductDiscoveredEvent
 {
     use Dispatchable;
 
-    public function __construct(public string $sku, public bool $exists = false)
-    {
-    }
+    public function __construct(public string $sku, public bool $exists = false) {}
 }

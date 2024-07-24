@@ -13,9 +13,7 @@ class CheckKnownProducts implements ChecksKnownProducts
 {
     public const CHUNK_SIZE = 100;
 
-    public function __construct(protected Magento $magento)
-    {
-    }
+    public function __construct(protected Magento $magento) {}
 
     public function handle(array $skus = []): void
     {
