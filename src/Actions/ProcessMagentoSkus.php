@@ -36,13 +36,17 @@ class ProcessMagentoSkus implements ProcessesMagentoSkus
 
         $knownProductsThatDontExistQuery->update(['exists_in_magento' => true, 'updated_at' => now()]);
 
-        $missingProducts = $skus->diff($knownProductsThatDontExist->pluck('sku'))
-            ->map(fn (string $sku) => ['sku' => $sku, 'exists_in_magento' => true, 'created_at' => now(), 'updated_at' => now()]);
+        $missingProducts = $skus->diff($knownProductsThatDontExist->pluck('sku'));
 
-        MagentoProduct::query()
-            ->insert($missingProducts->toArray());
+        $missingProducts
+            ->each(fn (string $sku) => MagentoProduct::query()->updateOrCreate(
+                ['sku' => $sku],
+                ['exists_in_magento' => true]
+            ));
 
-        $knownProductsThatDontExist->pluck('sku')->merge($missingProducts->pluck('sku'))
+        $knownProductsThatDontExist
+            ->pluck('sku')
+            ->merge($missingProducts)
             ->each(fn (string $sku) => event(new ProductCreatedInMagentoEvent($sku)));
     }
 
