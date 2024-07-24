@@ -21,7 +21,7 @@ class CheckKnownProducts implements ChecksKnownProducts
     {
         $productChunks = MagentoProduct::query()
             ->where('exists_in_magento', false)
-            ->when(count($skus), fn (Builder $query): Builder => $query->whereIn('sku', $skus)) /** @phpstan-ignore-line */
+            ->when(count($skus), fn (Builder $query): Builder => $query->whereIn('sku', $skus))
             ->get()
             ->chunk(static::CHUNK_SIZE);
 
