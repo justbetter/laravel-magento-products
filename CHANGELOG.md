@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.4.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.4.1...main)
+## [1.4.1](https://github.com/justbetter/laravel-magento-products/releases/tag/1.4.1) - 2024-07-24
+
+### What's Changed
+* Adjust product creation by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/12
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.4.0...1.4.1
+
 ## [1.4.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.4.0) - 2024-03-29
 
 ### What's Changed
