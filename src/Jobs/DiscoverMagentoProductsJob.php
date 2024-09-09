@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use JustBetter\MagentoClient\Jobs\Middleware\AvailableMiddleware;
 use JustBetter\MagentoProducts\Contracts\DiscoversMagentoProducts;
 
 class DiscoverMagentoProductsJob implements ShouldBeUnique, ShouldQueue
@@ -49,5 +50,12 @@ class DiscoverMagentoProductsJob implements ShouldBeUnique, ShouldQueue
     public function uniqueId(): int
     {
         return $this->page;
+    }
+
+    public function middleware(): array
+    {
+        return [
+            new AvailableMiddleware,
+        ];
     }
 }

@@ -4,9 +4,13 @@ namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use JustBetter\MagentoClient\Contracts\ChecksMagento;
 use JustBetter\MagentoProducts\Actions\RetrieveProductData;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 
 class RetrieveProductDataTest extends TestCase
 {
@@ -28,7 +32,8 @@ class RetrieveProductDataTest extends TestCase
         ]);
     }
 
-    public function test_it_retrieves_existing_product(): void
+    #[Test]
+    public function it_retrieves_existing_product(): void
     {
         MagentoProduct::query()->create(['sku' => '123', 'data' => ['test'], 'last_checked' => now()->subHour()]);
 
@@ -37,7 +42,8 @@ class RetrieveProductDataTest extends TestCase
         $this->assertEquals(['test'], $data);
     }
 
-    public function test_it_retrieves_new_product(): void
+    #[Test]
+    public function it_retrieves_new_product(): void
     {
         $data = $this->action->retrieve('123+456');
 
@@ -48,7 +54,8 @@ class RetrieveProductDataTest extends TestCase
         });
     }
 
-    public function test_it_retrieves_product_for_store(): void
+    #[Test]
+    public function it_retrieves_product_for_store(): void
     {
         $data = $this->action->retrieve('789', false, 'some_store');
 
@@ -64,7 +71,8 @@ class RetrieveProductDataTest extends TestCase
         });
     }
 
-    public function test_it_retrieves_missing_product(): void
+    #[Test]
+    public function it_retrieves_missing_product(): void
     {
         $data = $this->action->retrieve('404');
 
@@ -75,7 +83,8 @@ class RetrieveProductDataTest extends TestCase
         });
     }
 
-    public function test_it_rechecks_on_interval(): void
+    #[Test]
+    public function it_rechecks_on_interval(): void
     {
         MagentoProduct::query()->create(['sku' => '123', 'data' => ['test'], 'last_checked' => now()->subHours(3)]);
 
@@ -88,7 +97,8 @@ class RetrieveProductDataTest extends TestCase
         });
     }
 
-    public function test_it_forces_recheck(): void
+    #[Test]
+    public function it_forces_recheck(): void
     {
         MagentoProduct::query()->create(['sku' => '123', 'data' => ['test'], 'last_checked' => now()->subHour()]);
 
@@ -101,7 +111,8 @@ class RetrieveProductDataTest extends TestCase
         });
     }
 
-    public function test_it_returns_null_when_check_fails(): void
+    #[Test]
+    public function it_returns_null_when_check_fails(): void
     {
         MagentoProduct::query()->create(['sku' => '404', 'data' => ['test'], 'last_checked' => now()->subHour()]);
 
@@ -112,5 +123,21 @@ class RetrieveProductDataTest extends TestCase
         Http::assertSent(function (Request $request) {
             return $request->url() == 'magento/rest/all/V1/products/404';
         });
+    }
+
+    #[Test]
+    public function it_throws_exception_when_magento_is_not_available(): void
+    {
+        $this->mock(ChecksMagento::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('available')->andReturnFalse();
+        });
+
+        /** @var RetrieveProductData $action */
+        $action = app(RetrieveProductData::class);
+
+        $this->expectException(RuntimeException::class);
+        $action->retrieve('456');
+
+        Http::assertNothingSent();
     }
 }

@@ -16,6 +16,8 @@ class RetrieveProductData implements RetrievesProductData
         $product = MagentoProduct::findBySku($sku, $store);
 
         if ($product === null) {
+            throw_if(! $this->magento->available(), 'Magento unavailable');
+
             $magentoProductResponse = $this->getMagentoProduct($sku, $store);
 
             $magentoProductResponse->throwIf($magentoProductResponse->serverError());

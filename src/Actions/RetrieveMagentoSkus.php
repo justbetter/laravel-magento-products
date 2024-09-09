@@ -20,7 +20,7 @@ class RetrieveMagentoSkus implements RetrievesMagentoSkus
             ->paginate($page, config('magento-products.page_size', 50))
             ->get();
 
-        return $this->magento->get('products', $search)->collect('items')->pluck('sku');
+        return $this->magento->get('products', $search)->throw()->collect('items')->pluck('sku');
     }
 
     public static function bind(): void
