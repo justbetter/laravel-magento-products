@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use JustBetter\MagentoClient\Jobs\Middleware\AvailableMiddleware;
 use JustBetter\MagentoProducts\Contracts\ChecksKnownProducts;
 
 class CheckKnownProductsExistenceJob implements ShouldQueue
@@ -26,5 +27,12 @@ class CheckKnownProductsExistenceJob implements ShouldQueue
     public function handle(ChecksKnownProducts $checksKnownProducts): void
     {
         $checksKnownProducts->handle($this->skus);
+    }
+
+    public function middleware(): array
+    {
+        return [
+            new AvailableMiddleware,
+        ];
     }
 }

@@ -19,6 +19,7 @@ class CheckMagentoExistence implements ChecksMagentoExistence
         $magentoProduct = MagentoProduct::findBySku($sku);
 
         if ($magentoProduct === null) {
+            throw_if(! $this->magento->available(), 'Magento unavailable');
             $response = $this->getMagentoProduct($sku);
 
             $response->throwIf(! in_array($response->status(), [200, 404]));
