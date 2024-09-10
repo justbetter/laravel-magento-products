@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.4.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.5.0...main)
+## [1.5.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.5.0) - 2024-09-10
+
+### What's Changed
+* Add Magento availability check by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/13
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.4.1...1.5.0
+
 ## [1.4.1](https://github.com/justbetter/laravel-magento-products/releases/tag/1.4.1) - 2024-07-24
 
 ### What's Changed
