@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.5.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.6.0...main)
+## [1.6.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.6.0) - 2025-02-13
+
+### What's Changed
+* Laravel 12 support by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/14
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.5.0...1.6.0
+
 ## [1.5.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.5.0) - 2024-09-10
 
 ### What's Changed
