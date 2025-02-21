@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Commands\RetrieveProductDataCommand;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class RetrieveProductDataCommandTest extends TestCase
 {
-    public function test_it_retrieves_data(): void
+    #[Test]
+    public function it_retrieves_data(): void
     {
         Http::fake([
             '*/products/123' => Http::response(['productdata']),

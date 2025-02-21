@@ -5,6 +5,7 @@ namespace JustBetter\MagentoProducts\Tests\Actions;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Actions\CheckMagentoEnabled;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CheckMagentoEnabledTest extends TestCase
 {
@@ -17,7 +18,8 @@ class CheckMagentoEnabledTest extends TestCase
         $this->action = app(CheckMagentoEnabled::class);
     }
 
-    public function test_it_checks_unknown_products(): void
+    #[Test]
+    public function it_checks_unknown_products(): void
     {
         Http::fake([
             '*/products/1' => Http::response([
@@ -32,7 +34,8 @@ class CheckMagentoEnabledTest extends TestCase
         $this->assertFalse($this->action->enabled('2'));
     }
 
-    public function test_it_checks_missing_product(): void
+    #[Test]
+    public function it_checks_missing_product(): void
     {
         Http::fake([
             '*/products/3' => Http::response([], 404),

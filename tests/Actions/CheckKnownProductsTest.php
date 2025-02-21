@@ -9,6 +9,7 @@ use JustBetter\MagentoProducts\Actions\CheckKnownProducts;
 use JustBetter\MagentoProducts\Events\ProductCreatedInMagentoEvent;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CheckKnownProductsTest extends TestCase
 {
@@ -32,7 +33,8 @@ class CheckKnownProductsTest extends TestCase
         MagentoProduct::query()->create(['sku' => '789', 'exists_in_magento' => true]);
     }
 
-    public function test_it_sets_in_magento(): void
+    #[Test]
+    public function it_sets_in_magento(): void
     {
         /** @var CheckKnownProducts $action */
         $action = app(CheckKnownProducts::class);
@@ -55,7 +57,8 @@ class CheckKnownProductsTest extends TestCase
         });
     }
 
-    public function test_it_checks_limited_skus(): void
+    #[Test]
+    public function it_checks_limited_skus(): void
     {
         /** @var CheckKnownProducts $action */
         $action = app(CheckKnownProducts::class);
@@ -76,7 +79,8 @@ class CheckKnownProductsTest extends TestCase
         });
     }
 
-    public function test_it_dispatches_events(): void
+    #[Test]
+    public function it_dispatches_events(): void
     {
         /** @var CheckKnownProducts $action */
         $action = app(CheckKnownProducts::class);

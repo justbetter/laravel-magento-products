@@ -3,13 +3,18 @@
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Bus\Batch;
+use Illuminate\Support\Enumerable;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Actions\DiscoverMagentoProducts;
 use JustBetter\MagentoProducts\Contracts\ProcessesMagentoSkus;
-use JustBetter\MagentoProducts\Contracts\RetrievesMagentoSkus;
+use JustBetter\MagentoProducts\Events\ProductDataModifiedEvent;
 use JustBetter\MagentoProducts\Jobs\DiscoverMagentoProductsJob;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 
 class DiscoverMagentoProductsTest extends TestCase
 {
@@ -20,17 +25,23 @@ class DiscoverMagentoProductsTest extends TestCase
         config()->set('magento-products.page_size', 2);
     }
 
-    public function test_it_processes_single_page(): void
+    #[Test]
+    public function it_processes_single_page(): void
     {
-        $skus = collect(['123']);
+        Bus::fake();
+        Event::fake([ProductDataModifiedEvent::class]);
+        Http::fake([
+            'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=2&searchCriteria%5BcurrentPage%5D=0' => Http::response([
+                'items' => [
+                    ['sku' => '123'],
+                ],
+            ]),
+        ])->preventingStrayRequests();
 
-        $this->mock(RetrievesMagentoSkus::class, function (MockInterface $mock) use ($skus) {
-            $mock->shouldReceive('retrieve')->with(0)->once()
-                ->andReturn($skus);
-        });
-
-        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock) use ($skus) {
-            $mock->shouldReceive('process')->with($skus)->once();
+        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('process')->withArgs(function (Enumerable $skus): bool {
+                return $skus->toArray() === ['123'];
+            })->once();
         });
 
         $job = new DiscoverMagentoProductsJob;
@@ -42,14 +53,96 @@ class DiscoverMagentoProductsTest extends TestCase
         /** @var DiscoverMagentoProducts $action */
         $action = app(DiscoverMagentoProducts::class);
         $action->discover(0, $batch);
+
+        Event::assertDispatched(ProductDataModifiedEvent::class, function (ProductDataModifiedEvent $event): bool {
+            return $event->oldData === null && $event->newData === ['sku' => '123'];
+        });
+        Bus::assertNothingBatched();
     }
 
-    public function test_it_dispatches_next_job(): void
+    #[Test]
+    public function it_dispatches_modified_event_with_old_data(): void
     {
-        $this->mock(RetrievesMagentoSkus::class, function (MockInterface $mock) {
-            $mock->shouldReceive('retrieve')->with(0)->once()
-                ->andReturn(collect(['123', '456']));
+        Bus::fake();
+        Event::fake([ProductDataModifiedEvent::class]);
+        Http::fake([
+            'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=2&searchCriteria%5BcurrentPage%5D=0' => Http::response([
+                'items' => [
+                    ['sku' => '123'],
+                ],
+            ]),
+        ])->preventingStrayRequests();
+
+        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('process')->withArgs(function (Enumerable $skus): bool {
+                return $skus->toArray() === ['123'];
+            })->once();
         });
+
+        $job = new DiscoverMagentoProductsJob;
+        $job->withFakeBatch();
+
+        /** @var Batch $batch */
+        $batch = $job->batch();
+
+        MagentoProduct::query()->create([
+            'sku' => '123',
+            'checksum' => 'old',
+            'data' => ['sku' => '123', 'old' => 'data'],
+        ]);
+
+        /** @var DiscoverMagentoProducts $action */
+        $action = app(DiscoverMagentoProducts::class);
+        $action->discover(0, $batch);
+
+        Event::assertDispatched(ProductDataModifiedEvent::class, function (ProductDataModifiedEvent $event): bool {
+            return $event->oldData === ['sku' => '123', 'old' => 'data'] && $event->newData === ['sku' => '123'];
+        });
+        Bus::assertNothingBatched();
+    }
+
+    #[Test]
+    public function it_does_not_dispatch_event_when_checksum_has_not_changed(): void
+    {
+        Bus::fake();
+        Event::fake([ProductDataModifiedEvent::class]);
+        Http::fake([
+            'magento/rest/all/V1/products?searchCriteria%5BpageSize%5D=2&searchCriteria%5BcurrentPage%5D=0' => Http::response([
+                'items' => [
+                    ['sku' => '123'],
+                ],
+            ]),
+        ])->preventingStrayRequests();
+
+        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('process')->withArgs(function (Enumerable $skus): bool {
+                return $skus->toArray() === ['123'];
+            })->once();
+        });
+
+        $job = new DiscoverMagentoProductsJob;
+        $job->withFakeBatch();
+
+        /** @var Batch $batch */
+        $batch = $job->batch();
+
+        MagentoProduct::query()->create([
+            'sku' => '123',
+            'checksum' => 'ffd4c4101da9cd00e59cab0b0874f192',
+            'data' => ['sku' => '123', 'old' => 'data'],
+        ]);
+
+        /** @var DiscoverMagentoProducts $action */
+        $action = app(DiscoverMagentoProducts::class);
+        $action->discover(0, $batch);
+
+        Event::assertNotDispatched(ProductDataModifiedEvent::class);
+        Bus::assertNothingBatched();
+    }
+
+    #[Test]
+    public function it_dispatches_next_job(): void
+    {
 
         $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock) {
             $mock->shouldReceive('process')->once();
@@ -72,18 +165,14 @@ class DiscoverMagentoProductsTest extends TestCase
         $this->assertEquals(1, $addedJob->page);
     }
 
-    public function test_it_sets_retrieved_false(): void
+    #[Test]
+    public function it_sets_retrieved_false(): void
     {
         MagentoProduct::query()->create([
             'sku' => '123',
             'exists_in_magento' => true,
             'retrieved' => true,
         ]);
-
-        $this->mock(RetrievesMagentoSkus::class, function (MockInterface $mock) {
-            $mock->shouldReceive('retrieve')->with(0)->once()
-                ->andReturn(collect());
-        });
 
         $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock) {
             $mock->shouldReceive('process')->once();
@@ -106,18 +195,14 @@ class DiscoverMagentoProductsTest extends TestCase
         $this->assertFalse($product->retrieved);
     }
 
-    public function test_it_sets_retrieved_true(): void
+    #[Test]
+    public function it_sets_retrieved_true(): void
     {
         MagentoProduct::query()->create([
             'sku' => '123',
             'exists_in_magento' => true,
             'retrieved' => true,
         ]);
-
-        $this->mock(RetrievesMagentoSkus::class, function (MockInterface $mock) {
-            $mock->shouldReceive('retrieve')->with(0)->once()
-                ->andReturn(collect(['123']));
-        });
 
         $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock) {
             $mock->shouldReceive('process')->once();
