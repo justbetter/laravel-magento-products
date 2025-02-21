@@ -34,15 +34,19 @@ class DiscoverMagentoProducts implements DiscoversMagentoProducts
         $hasNextPage = $products->count() == config('magento-products.page_size');
 
         if ($hasNextPage) {
-            /* $batch->add(new DiscoverMagentoProductsJob($page + 1)); */
+            $batch->add(new DiscoverMagentoProductsJob($page + 1));
         }
 
         $skus = $products->pluck('sku');
-        /* $this->skuProcessor->process($skus); */
+        $this->skuProcessor->process($skus);
 
         foreach ($products as $productData) {
             $product = MagentoProduct::query()->firstOrNew(['sku' => $productData['sku']]);
-            $checksum = md5(json_encode($productData));
+
+            /** @var non-empty-string $encoded */
+            $encoded = json_encode($productData);
+
+            $checksum = md5($encoded);
 
             if ($product->checksum !== $checksum) {
                 event(new ProductDataModifiedEvent($product->sku, $product->data, $productData));
