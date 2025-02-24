@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.6.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.7.0...main)
+## [1.7.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.7.0) - 2025-02-24
+
+### What's Changed
+* Magento product data modified event by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/15
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.6.0...1.7.0
+
 ## [1.6.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.6.0) - 2025-02-13
 
 ### What's Changed
