@@ -7,10 +7,12 @@ use JustBetter\MagentoProducts\Actions\CheckRemovedProducts;
 use JustBetter\MagentoProducts\Events\ProductDeletedInMagentoEvent;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CheckRemovedProductsTest extends TestCase
 {
-    public function test_it_updates_existence_boolean(): void
+    #[Test]
+    public function it_updates_existence_boolean(): void
     {
         Event::fake();
 

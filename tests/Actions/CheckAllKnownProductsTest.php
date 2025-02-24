@@ -8,10 +8,12 @@ use JustBetter\MagentoProducts\Actions\CheckKnownProducts;
 use JustBetter\MagentoProducts\Jobs\CheckKnownProductsExistenceJob;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CheckAllKnownProductsTest extends TestCase
 {
-    public function test_it_dispatches_jobs(): void
+    #[Test]
+    public function it_dispatches_jobs(): void
     {
         Bus::fake();
 

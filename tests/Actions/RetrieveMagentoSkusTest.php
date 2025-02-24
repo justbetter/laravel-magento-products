@@ -5,10 +5,12 @@ namespace JustBetter\MagentoProducts\Tests\Actions;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Actions\RetrieveMagentoSkus;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class RetrieveMagentoSkusTest extends TestCase
 {
-    public function test_it_retrieves_skus(): void
+    #[Test]
+    public function it_retrieves_skus(): void
     {
         Http::fake([
             '*' => Http::response([

@@ -7,6 +7,9 @@ use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Query\SearchCriteria;
 use JustBetter\MagentoProducts\Contracts\RetrievesMagentoSkus;
 
+/**
+ * @deprecated
+ */
 class RetrieveMagentoSkus implements RetrievesMagentoSkus
 {
     public function __construct(

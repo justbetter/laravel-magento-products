@@ -7,10 +7,12 @@ use Illuminate\Support\Testing\Fakes\PendingBatchFake;
 use JustBetter\MagentoProducts\Commands\DiscoverMagentoProductsCommand;
 use JustBetter\MagentoProducts\Jobs\DiscoverMagentoProductsJob;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DiscoverMagentoProductsCommandTest extends TestCase
 {
-    public function test_it_dispatches_job(): void
+    #[Test]
+    public function it_dispatches_job(): void
     {
         Bus::fake();
 

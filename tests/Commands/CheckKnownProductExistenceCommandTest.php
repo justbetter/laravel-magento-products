@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoProducts\Commands\CheckKnownProductsExistenceCommand;
 use JustBetter\MagentoProducts\Jobs\CheckAllKnownProductsExistenceJob;
 use JustBetter\MagentoProducts\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CheckKnownProductExistenceCommandTest extends TestCase
 {
-    public function test_it_dispatches_job(): void
+    #[Test]
+    public function it_dispatches_job(): void
     {
         Bus::fake();
 

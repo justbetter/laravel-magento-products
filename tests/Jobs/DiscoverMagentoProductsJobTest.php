@@ -7,10 +7,12 @@ use JustBetter\MagentoProducts\Contracts\DiscoversMagentoProducts;
 use JustBetter\MagentoProducts\Jobs\DiscoverMagentoProductsJob;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 
 class DiscoverMagentoProductsJobTest extends TestCase
 {
-    public function test_it_calls_action(): void
+    #[Test]
+    public function it_calls_action(): void
     {
         $this->mock(DiscoversMagentoProducts::class, function (MockInterface $mock): void {
             $mock->shouldReceive('discover')->once();
@@ -22,7 +24,8 @@ class DiscoverMagentoProductsJobTest extends TestCase
         Bus::dispatch($job);
     }
 
-    public function test_it_stops_when_batch_is_cancelled(): void
+    #[Test]
+    public function it_stops_when_batch_is_cancelled(): void
     {
         $this->mock(DiscoversMagentoProducts::class, function (MockInterface $mock): void {
             $mock->shouldNotReceive('discover');
@@ -35,7 +38,8 @@ class DiscoverMagentoProductsJobTest extends TestCase
         Bus::dispatch($job);
     }
 
-    public function test_it_has_tags(): void
+    #[Test]
+    public function it_has_tags(): void
     {
         $job = new DiscoverMagentoProductsJob(0);
 

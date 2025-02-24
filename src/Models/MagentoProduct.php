@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
  * @property bool $enabled
  * @property ?array $data
  * @property ?Carbon $last_checked
+ * @property ?string $checksum
  * @property bool $retrieved
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
