@@ -45,7 +45,7 @@ If it does not exist the sku will still be stored in the database. The `\JustBet
 ### Retrieving product data
 
 You can use this package to retrieve product data. This data will be saved in the database and automatically retrieved when it is older than X hours.
-You can configure the amount of ours in the config file
+You can configure the amount of hours in the config file
 For example:
 
 ```php
