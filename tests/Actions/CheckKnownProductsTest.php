@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
@@ -11,7 +13,7 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckKnownProductsTest extends TestCase
+final class CheckKnownProductsTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -43,7 +45,7 @@ class CheckKnownProductsTest extends TestCase
 
         $this->assertTrue(MagentoProduct::query()->where('sku', '123')->first()->exists_in_magento); /** @phpstan-ignore-line */
         $this->assertFalse(MagentoProduct::query()->where('sku', '456')->first()->exists_in_magento); /** @phpstan-ignore-line */
-        Http::assertSent(function (Request $request) {
+        Http::assertSent(function (Request $request): bool {
             $expectedSearchCriteria = [
                 'fields' => 'items[sku]',
                 'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
@@ -65,7 +67,7 @@ class CheckKnownProductsTest extends TestCase
 
         $action->handle(['123']);
 
-        Http::assertSent(function (Request $request) {
+        Http::assertSent(function (Request $request): bool {
             $expectedSearchCriteria = [
                 'fields' => 'items[sku]',
                 'searchCriteria[filter_groups][0][filters][0][field]' => 'sku',
@@ -87,8 +89,6 @@ class CheckKnownProductsTest extends TestCase
 
         $action->handle();
 
-        Event::assertDispatched(ProductCreatedInMagentoEvent::class, function (ProductCreatedInMagentoEvent $event) {
-            return $event->sku === '123';
-        });
+        Event::assertDispatched(ProductCreatedInMagentoEvent::class, fn (ProductCreatedInMagentoEvent $event): bool => $event->sku === '123');
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Support\Facades\Http;
@@ -7,7 +9,7 @@ use JustBetter\MagentoProducts\Actions\RetrieveMagentoSkus;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveMagentoSkusTest extends TestCase
+final class RetrieveMagentoSkusTest extends TestCase
 {
     #[Test]
     public function it_retrieves_skus(): void

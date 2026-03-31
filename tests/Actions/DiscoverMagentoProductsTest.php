@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Bus\Batch;
@@ -16,7 +18,7 @@ use JustBetter\MagentoProducts\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class DiscoverMagentoProductsTest extends TestCase
+final class DiscoverMagentoProductsTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -39,9 +41,7 @@ class DiscoverMagentoProductsTest extends TestCase
         ])->preventingStrayRequests();
 
         $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('process')->withArgs(function (Enumerable $skus): bool {
-                return $skus->toArray() === ['123'];
-            })->once();
+            $mock->shouldReceive('process')->withArgs(fn (Enumerable $skus): bool => $skus->toArray() === ['123'])->once();
         });
 
         $job = new DiscoverMagentoProductsJob;
@@ -54,9 +54,7 @@ class DiscoverMagentoProductsTest extends TestCase
         $action = app(DiscoverMagentoProducts::class);
         $action->discover(0, $batch);
 
-        Event::assertDispatched(ProductDataModifiedEvent::class, function (ProductDataModifiedEvent $event): bool {
-            return $event->oldData === null && $event->newData === ['sku' => '123'];
-        });
+        Event::assertDispatched(ProductDataModifiedEvent::class, fn (ProductDataModifiedEvent $event): bool => $event->oldData === null && $event->newData === ['sku' => '123']);
         Bus::assertNothingBatched();
     }
 
@@ -74,9 +72,7 @@ class DiscoverMagentoProductsTest extends TestCase
         ])->preventingStrayRequests();
 
         $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('process')->withArgs(function (Enumerable $skus): bool {
-                return $skus->toArray() === ['123'];
-            })->once();
+            $mock->shouldReceive('process')->withArgs(fn (Enumerable $skus): bool => $skus->toArray() === ['123'])->once();
         });
 
         $job = new DiscoverMagentoProductsJob;
@@ -95,9 +91,7 @@ class DiscoverMagentoProductsTest extends TestCase
         $action = app(DiscoverMagentoProducts::class);
         $action->discover(0, $batch);
 
-        Event::assertDispatched(ProductDataModifiedEvent::class, function (ProductDataModifiedEvent $event): bool {
-            return $event->oldData === ['sku' => '123', 'old' => 'data'] && $event->newData === ['sku' => '123'];
-        });
+        Event::assertDispatched(ProductDataModifiedEvent::class, fn (ProductDataModifiedEvent $event): bool => $event->oldData === ['sku' => '123', 'old' => 'data'] && $event->newData === ['sku' => '123']);
         Bus::assertNothingBatched();
     }
 
@@ -115,9 +109,7 @@ class DiscoverMagentoProductsTest extends TestCase
         ])->preventingStrayRequests();
 
         $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('process')->withArgs(function (Enumerable $skus): bool {
-                return $skus->toArray() === ['123'];
-            })->once();
+            $mock->shouldReceive('process')->withArgs(fn (Enumerable $skus): bool => $skus->toArray() === ['123'])->once();
         });
 
         $job = new DiscoverMagentoProductsJob;
@@ -155,7 +147,7 @@ class DiscoverMagentoProductsTest extends TestCase
         ])->preventingStrayRequests();
         config()->set('magento-products.page_size', 1);
 
-        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock) {
+        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
             $mock->shouldReceive('process')->once();
         });
 
@@ -172,8 +164,8 @@ class DiscoverMagentoProductsTest extends TestCase
         /** @var ?DiscoverMagentoProductsJob $addedJob */
         $addedJob = $job->batch()->added[0] ?? null;
 
-        $this->assertNotNull($addedJob);
-        $this->assertEquals(1, $addedJob->page);
+        $this->assertInstanceOf(DiscoverMagentoProductsJob::class, $addedJob);
+        $this->assertSame(1, $addedJob->page);
     }
 
     #[Test]
@@ -191,7 +183,7 @@ class DiscoverMagentoProductsTest extends TestCase
             'retrieved' => true,
         ]);
 
-        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock) {
+        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
             $mock->shouldReceive('process')->once();
         });
 
@@ -208,7 +200,7 @@ class DiscoverMagentoProductsTest extends TestCase
         /** @var ?MagentoProduct $product */
         $product = MagentoProduct::query()->first();
 
-        $this->assertNotNull($product);
+        $this->assertInstanceOf(MagentoProduct::class, $product);
         $this->assertFalse($product->retrieved);
     }
 
@@ -229,7 +221,7 @@ class DiscoverMagentoProductsTest extends TestCase
             'retrieved' => true,
         ]);
 
-        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock) {
+        $this->mock(ProcessesMagentoSkus::class, function (MockInterface $mock): void {
             $mock->shouldReceive('process')->once();
         });
 
@@ -246,7 +238,7 @@ class DiscoverMagentoProductsTest extends TestCase
         /** @var ?MagentoProduct $product */
         $product = MagentoProduct::query()->first();
 
-        $this->assertNotNull($product);
+        $this->assertInstanceOf(MagentoProduct::class, $product);
         $this->assertTrue($product->retrieved);
     }
 }

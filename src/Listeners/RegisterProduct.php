@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Listeners;
 
 use JustBetter\MagentoProducts\Events\ProductDiscoveredEvent;

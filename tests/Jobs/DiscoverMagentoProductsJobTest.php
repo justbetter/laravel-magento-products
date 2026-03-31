@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
@@ -9,7 +11,7 @@ use JustBetter\MagentoProducts\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class DiscoverMagentoProductsJobTest extends TestCase
+final class DiscoverMagentoProductsJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void
@@ -43,6 +45,6 @@ class DiscoverMagentoProductsJobTest extends TestCase
     {
         $job = new DiscoverMagentoProductsJob(0);
 
-        $this->assertEquals([0], $job->tags());
+        $this->assertSame([0], $job->tags());
     }
 }

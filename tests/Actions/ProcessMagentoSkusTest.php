@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Support\Facades\Event;
@@ -9,9 +11,9 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class ProcessMagentoSkusTest extends TestCase
+final class ProcessMagentoSkusTest extends TestCase
 {
-    protected ProcessMagentoSkus $action;
+    private ProcessMagentoSkus $action;
 
     protected function setUp(): void
     {

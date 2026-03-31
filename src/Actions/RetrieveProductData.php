@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Actions;
 
 use Illuminate\Http\Client\Response;
@@ -15,7 +17,7 @@ class RetrieveProductData implements RetrievesProductData
     {
         $product = MagentoProduct::findBySku($sku, $store);
 
-        if ($product === null) {
+        if (! $product instanceof MagentoProduct) {
             throw_if(! $this->magento->available(), 'Magento unavailable');
 
             $magentoProductResponse = $this->getMagentoProduct($sku, $store);
