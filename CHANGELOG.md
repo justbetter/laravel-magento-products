@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.7.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.8.0...main)
+## [1.8.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.8.0) - 2026-04-02
+
+### What's Changed
+* Update README.md - fix typo by @cosmicvibes in https://github.com/justbetter/laravel-magento-products/pull/16
+* Adjust workflows by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/17
+* Laravel 13 support by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/18
+
+### New Contributors
+* @cosmicvibes made their first contribution in https://github.com/justbetter/laravel-magento-products/pull/16
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.7.0...1.8.0
+
 ## [1.7.0](https://github.com/justbetter/laravel-magento-products/releases/tag/1.7.0) - 2025-02-24
 
 ### What's Changed
