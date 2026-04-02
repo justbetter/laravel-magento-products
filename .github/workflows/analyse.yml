@@ -5,8 +5,13 @@ on: ['push', 'pull_request']
 jobs:
     test:
         runs-on: ubuntu-latest
+        strategy:
+            fail-fast: true
+            matrix:
+                php: [8.3, 8.4, 8.5]
+                laravel: [12.*, 13.*]
 
-        name: Analyse
+        name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
         steps:
             - name: Checkout code
@@ -15,12 +20,14 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.5
+                  php-version: ${{ matrix.php }}
                   extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                   coverage: none
 
             - name: Install dependencies
-              run: composer update --prefer-stable --prefer-dist --no-interaction
+              run: |
+                  composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
+                  composer update --prefer-dist --no-interaction
 
             - name: Analyse
               run: composer analyse
