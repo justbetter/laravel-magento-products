@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
@@ -8,7 +10,7 @@ use JustBetter\MagentoProducts\Jobs\CheckAllKnownProductsExistenceJob;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckKnownProductExistenceCommandTest extends TestCase
+final class CheckKnownProductExistenceCommandTest extends TestCase
 {
     #[Test]
     public function it_dispatches_job(): void

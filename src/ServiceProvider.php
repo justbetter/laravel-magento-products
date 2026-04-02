@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts;
 
 use Illuminate\Support\Facades\Event;
@@ -21,6 +23,7 @@ use JustBetter\MagentoProducts\Listeners\RegisterProduct;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    #[\Override]
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/magento-products.php', 'magento-products');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Actions;
 
 use Illuminate\Http\Client\Response;
@@ -18,7 +20,7 @@ class CheckMagentoExistence implements ChecksMagentoExistence
     {
         $magentoProduct = MagentoProduct::findBySku($sku);
 
-        if ($magentoProduct === null) {
+        if (! $magentoProduct instanceof MagentoProduct) {
             throw_if(! $this->magento->available(), 'Magento unavailable');
             $response = $this->getMagentoProduct($sku);
 

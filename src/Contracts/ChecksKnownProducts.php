@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Contracts;
 
 /** Checks if known products in the database that don't exist in Magento if they exist */

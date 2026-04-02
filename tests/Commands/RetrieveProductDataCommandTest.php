@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Commands;
 
 use Illuminate\Support\Facades\Http;
@@ -8,7 +10,7 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveProductDataCommandTest extends TestCase
+final class RetrieveProductDataCommandTest extends TestCase
 {
     #[Test]
     public function it_retrieves_data(): void

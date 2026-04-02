@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
@@ -12,9 +14,9 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
 
-class CheckMagentoExistenceTest extends TestCase
+final class CheckMagentoExistenceTest extends TestCase
 {
-    protected CheckMagentoExistence $action;
+    private CheckMagentoExistence $action;
 
     protected function setUp(): void
     {
@@ -52,9 +54,7 @@ class CheckMagentoExistenceTest extends TestCase
     {
         $this->assertTrue($this->action->exists('123'));
         $this->assertTrue(MagentoProduct::query()->where('sku', '123')->first()->exists_in_magento); /** @phpstan-ignore-line */
-        Http::assertSent(function (Request $request) {
-            return $request->url() === 'magento/rest/all/V1/products/123?fields=sku';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/123?fields=sku');
     }
 
     #[Test]
@@ -62,9 +62,7 @@ class CheckMagentoExistenceTest extends TestCase
     {
         $this->assertFalse($this->action->exists('456'));
         $this->assertFalse(MagentoProduct::query()->where('sku', '456')->first()->exists_in_magento); /** @phpstan-ignore-line */
-        Http::assertSent(function (Request $request) {
-            return $request->url() === 'magento/rest/all/V1/products/456?fields=sku';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/456?fields=sku');
     }
 
     #[Test]

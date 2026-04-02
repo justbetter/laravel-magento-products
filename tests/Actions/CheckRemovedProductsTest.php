@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Support\Facades\Event;
@@ -9,7 +11,7 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckRemovedProductsTest extends TestCase
+final class CheckRemovedProductsTest extends TestCase
 {
     #[Test]
     public function it_updates_existence_boolean(): void
@@ -35,7 +37,7 @@ class CheckRemovedProductsTest extends TestCase
         /** @var ?MagentoProduct $removedProduct */
         $removedProduct = MagentoProduct::query()->firstWhere('sku', '=', '::sku_1::');
 
-        $this->assertNotNull($removedProduct);
+        $this->assertInstanceOf(MagentoProduct::class, $removedProduct);
         $this->assertFalse($removedProduct->exists_in_magento);
 
         Event::assertDispatchedTimes(ProductDeletedInMagentoEvent::class, 1);

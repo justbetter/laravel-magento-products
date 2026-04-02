@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
@@ -12,9 +14,9 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
 
-class RetrieveProductDataTest extends TestCase
+final class RetrieveProductDataTest extends TestCase
 {
-    protected RetrieveProductData $action;
+    private RetrieveProductData $action;
 
     protected function setUp(): void
     {
@@ -39,7 +41,7 @@ class RetrieveProductDataTest extends TestCase
 
         $data = $this->action->retrieve('123');
 
-        $this->assertEquals(['test'], $data);
+        $this->assertSame(['test'], $data);
     }
 
     #[Test]
@@ -47,11 +49,9 @@ class RetrieveProductDataTest extends TestCase
     {
         $data = $this->action->retrieve('123+456');
 
-        $this->assertEquals(['456'], $data);
+        $this->assertSame(['456'], $data);
 
-        Http::assertSent(function (Request $request) {
-            return $request->url() == 'magento/rest/all/V1/products/123%2B456';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/123%2B456');
     }
 
     #[Test]
@@ -59,16 +59,14 @@ class RetrieveProductDataTest extends TestCase
     {
         $data = $this->action->retrieve('789', false, 'some_store');
 
-        $this->assertEquals(['789'], $data);
+        $this->assertSame(['789'], $data);
 
         /** @var MagentoProduct $createdProduct */
         $createdProduct = MagentoProduct::findBySku('789', 'some_store');
 
         $this->assertEquals('some_store', $createdProduct->store);
 
-        Http::assertSent(function (Request $request) {
-            return $request->url() == 'magento/rest/some_store/V1/products/789';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/some_store/V1/products/789');
     }
 
     #[Test]
@@ -78,9 +76,7 @@ class RetrieveProductDataTest extends TestCase
 
         $this->assertNull($data);
         $this->assertFalse(MagentoProduct::query()->where('sku', '404')->first()->exists_in_magento); /** @phpstan-ignore-line */
-        Http::assertSent(function (Request $request) {
-            return $request->url() == 'magento/rest/all/V1/products/404';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/404');
     }
 
     #[Test]
@@ -90,11 +86,9 @@ class RetrieveProductDataTest extends TestCase
 
         $data = $this->action->retrieve('123');
 
-        $this->assertEquals(['123'], $data);
+        $this->assertSame(['123'], $data);
 
-        Http::assertSent(function (Request $request) {
-            return $request->url() == 'magento/rest/all/V1/products/123';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/123');
     }
 
     #[Test]
@@ -104,11 +98,9 @@ class RetrieveProductDataTest extends TestCase
 
         $data = $this->action->retrieve('123', true);
 
-        $this->assertEquals(['123'], $data);
+        $this->assertSame(['123'], $data);
 
-        Http::assertSent(function (Request $request) {
-            return $request->url() == 'magento/rest/all/V1/products/123';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/123');
     }
 
     #[Test]
@@ -120,9 +112,7 @@ class RetrieveProductDataTest extends TestCase
 
         $this->assertNull($data);
 
-        Http::assertSent(function (Request $request) {
-            return $request->url() == 'magento/rest/all/V1/products/404';
-        });
+        Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/404');
     }
 
     #[Test]

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Support\Facades\Http;
@@ -7,9 +9,9 @@ use JustBetter\MagentoProducts\Actions\CheckMagentoEnabled;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckMagentoEnabledTest extends TestCase
+final class CheckMagentoEnabledTest extends TestCase
 {
-    protected CheckMagentoEnabled $action;
+    private CheckMagentoEnabled $action;
 
     protected function setUp(): void
     {

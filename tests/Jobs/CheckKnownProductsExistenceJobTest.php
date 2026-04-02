@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Jobs;
 
 use JustBetter\MagentoProducts\Contracts\ChecksKnownProducts;
@@ -8,12 +10,12 @@ use JustBetter\MagentoProducts\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckKnownProductsExistenceJobTest extends TestCase
+final class CheckKnownProductsExistenceJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void
     {
-        $this->mock(ChecksKnownProducts::class, function (MockInterface $mock) {
+        $this->mock(ChecksKnownProducts::class, function (MockInterface $mock): void {
             $mock->shouldReceive('handle')->with(['123'])->once();
         });
 

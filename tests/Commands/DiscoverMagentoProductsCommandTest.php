@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
@@ -9,7 +11,7 @@ use JustBetter\MagentoProducts\Jobs\DiscoverMagentoProductsJob;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class DiscoverMagentoProductsCommandTest extends TestCase
+final class DiscoverMagentoProductsCommandTest extends TestCase
 {
     #[Test]
     public function it_dispatches_job(): void
@@ -18,8 +20,6 @@ class DiscoverMagentoProductsCommandTest extends TestCase
 
         $this->artisan(DiscoverMagentoProductsCommand::class);
 
-        Bus::assertBatched(function (PendingBatchFake $batch) {
-            return $batch->jobs->count() === 1 && get_class($batch->jobs->first()) === DiscoverMagentoProductsJob::class;
-        });
+        Bus::assertBatched(fn (PendingBatchFake $batch): bool => $batch->jobs->count() === 1 && $batch->jobs->first()::class === DiscoverMagentoProductsJob::class);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Support\Facades\Bus;
@@ -10,7 +12,7 @@ use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class CheckAllKnownProductsTest extends TestCase
+final class CheckAllKnownProductsTest extends TestCase
 {
     #[Test]
     public function it_dispatches_jobs(): void
