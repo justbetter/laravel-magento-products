@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Contracts\ChecksMagento;
 use JustBetter\MagentoProducts\Actions\CheckMagentoExistence;
+use JustBetter\MagentoProducts\Events\ProductCreatedInMagentoEvent;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use Mockery\MockInterface;
@@ -36,11 +38,14 @@ final class CheckMagentoExistenceTest extends TestCase
     #[Test]
     public function existing_product(): void
     {
+        Event::fake([ProductCreatedInMagentoEvent::class]);
+
         MagentoProduct::query()->create([
             'sku' => '123', 'exists_in_magento' => true, 'last_checked' => now()->subHour(),
         ]);
 
         $this->assertTrue($this->action->exists('123'));
+        Event::assertNotDispatched(ProductCreatedInMagentoEvent::class);
     }
 
     #[Test]
@@ -52,17 +57,23 @@ final class CheckMagentoExistenceTest extends TestCase
     #[Test]
     public function new_existing_product(): void
     {
+        Event::fake([ProductCreatedInMagentoEvent::class]);
+
         $this->assertTrue($this->action->exists('123'));
         $this->assertTrue(MagentoProduct::query()->where('sku', '123')->first()->exists_in_magento); /** @phpstan-ignore-line */
         Http::assertSent(fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/123?fields=sku');
+        Event::assertDispatched(fn (ProductCreatedInMagentoEvent $event): bool => $event->sku === '123');
     }
 
     #[Test]
     public function new_non_existing_product(): void
     {
+        Event::fake([ProductCreatedInMagentoEvent::class]);
+
         $this->assertFalse($this->action->exists('456'));
         $this->assertFalse(MagentoProduct::query()->where('sku', '456')->first()->exists_in_magento); /** @phpstan-ignore-line */
         Http::assertSent(fn (Request $request): bool => $request->url() === 'magento/rest/all/V1/products/456?fields=sku');
+        Event::assertNotDispatched(ProductCreatedInMagentoEvent::class);
     }
 
     #[Test]

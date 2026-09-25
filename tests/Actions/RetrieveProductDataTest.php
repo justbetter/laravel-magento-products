@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace JustBetter\MagentoProducts\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Contracts\ChecksMagento;
 use JustBetter\MagentoProducts\Actions\RetrieveProductData;
+use JustBetter\MagentoProducts\Events\ProductCreatedInMagentoEvent;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoProducts\Tests\TestCase;
 use Mockery\MockInterface;
@@ -47,11 +49,15 @@ final class RetrieveProductDataTest extends TestCase
     #[Test]
     public function it_retrieves_new_product(): void
     {
+        Event::fake([ProductCreatedInMagentoEvent::class]);
+
         $data = $this->action->retrieve('123+456');
 
         $this->assertSame(['456'], $data);
 
         Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/123%2B456');
+        Event::assertDispatchedTimes(ProductCreatedInMagentoEvent::class, 1);
+        Event::assertDispatched(fn (ProductCreatedInMagentoEvent $event): bool => $event->sku === '123+456');
     }
 
     #[Test]
@@ -72,23 +78,43 @@ final class RetrieveProductDataTest extends TestCase
     #[Test]
     public function it_retrieves_missing_product(): void
     {
+        Event::fake([ProductCreatedInMagentoEvent::class]);
+
         $data = $this->action->retrieve('404');
 
         $this->assertNull($data);
         $this->assertFalse(MagentoProduct::query()->where('sku', '404')->first()->exists_in_magento); /** @phpstan-ignore-line */
         Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/404');
+        Event::assertNotDispatched(ProductCreatedInMagentoEvent::class);
     }
 
     #[Test]
     public function it_rechecks_on_interval(): void
     {
-        MagentoProduct::query()->create(['sku' => '123', 'data' => ['test'], 'last_checked' => now()->subHours(3)]);
+        Event::fake([ProductCreatedInMagentoEvent::class]);
+
+        MagentoProduct::query()->create(['sku' => '123', 'exists_in_magento' => true, 'data' => ['test'], 'last_checked' => now()->subHours(3)]);
 
         $data = $this->action->retrieve('123');
 
         $this->assertSame(['123'], $data);
 
         Http::assertSent(fn (Request $request): bool => $request->url() == 'magento/rest/all/V1/products/123');
+        Event::assertNotDispatched(ProductCreatedInMagentoEvent::class);
+    }
+
+    #[Test]
+    public function it_dispatches_created_event(): void
+    {
+        Event::fake([ProductCreatedInMagentoEvent::class]);
+
+        MagentoProduct::query()->create(['sku' => '123', 'exists_in_magento' => false, 'data' => null, 'last_checked' => now()->subHour()]);
+
+        $data = $this->action->retrieve('123');
+
+        $this->assertSame(['123'], $data);
+        $this->assertTrue(MagentoProduct::query()->where('sku', '123')->first()?->exists_in_magento);
+        Event::assertDispatched(fn (ProductCreatedInMagentoEvent $event): bool => $event->sku === '123');
     }
 
     #[Test]

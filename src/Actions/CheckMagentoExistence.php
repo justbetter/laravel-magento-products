@@ -7,6 +7,7 @@ namespace JustBetter\MagentoProducts\Actions;
 use Illuminate\Http\Client\Response;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
+use JustBetter\MagentoProducts\Events\ProductCreatedInMagentoEvent;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 
 class CheckMagentoExistence implements ChecksMagentoExistence
@@ -31,6 +32,10 @@ class CheckMagentoExistence implements ChecksMagentoExistence
                 'exists_in_magento' => $response->ok(),
                 'last_checked' => now(),
             ]);
+
+            if ($magentoProduct->exists_in_magento) {
+                event(new ProductCreatedInMagentoEvent($sku));
+            }
         }
 
         return $magentoProduct->exists_in_magento;

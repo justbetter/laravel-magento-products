@@ -7,6 +7,7 @@ namespace JustBetter\MagentoProducts\Actions;
 use Illuminate\Http\Client\Response;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\RetrievesProductData;
+use JustBetter\MagentoProducts\Events\ProductCreatedInMagentoEvent;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 
 class RetrieveProductData implements RetrievesProductData
@@ -32,6 +33,10 @@ class RetrieveProductData implements RetrievesProductData
                     'data' => $magentoProductResponse->successful() ? $magentoProductResponse->json() : null,
                     'store' => $store,
                 ]);
+
+            if ($product->exists_in_magento) {
+                event(new ProductCreatedInMagentoEvent($sku));
+            }
         }
 
         $lastChecked = $product->last_checked;
@@ -51,6 +56,10 @@ class RetrieveProductData implements RetrievesProductData
             $product->last_checked = now();
             $product->exists_in_magento = true;
             $product->save();
+
+            if ($product->wasChanged('exists_in_magento')) {
+                event(new ProductCreatedInMagentoEvent($sku));
+            }
         }
 
         return $product->data;
