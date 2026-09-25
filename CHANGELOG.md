@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.9.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-products/compare/1.9.2...main)
+## [1.9.2](https://github.com/justbetter/laravel-magento-products/releases/tag/1.9.2) - 2026-09-25
+
+### What's Changed
+* Add missing product creation events by @VincentBean in https://github.com/justbetter/laravel-magento-products/pull/21
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-products/compare/1.9.1...1.9.2
+
 ## [1.9.1](https://github.com/justbetter/laravel-magento-products/releases/tag/1.9.1) - 2026-07-10
 
 ### What's Changed
